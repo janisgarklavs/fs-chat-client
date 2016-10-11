@@ -1,0 +1,11 @@
+<section class="chat">
+    <div class="chatbox">
+        <div class="message" ng-repeat="message in chat.messages track by $index">{{message}}</div>
+    </div>
+    <div class="controls">
+        <input type="text" class="message">
+        <button>send</button>
+        <button>disconnect</button>
+        <button ng-click="chat.goBack()">Go to back with additional data</button>
+    </div>
+</section>
