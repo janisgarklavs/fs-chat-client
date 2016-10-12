@@ -3,42 +3,81 @@ export default class NetworkService {
         this.connectionUrl = socketAddress.url + ':' + socketAddress.port;
         this.rootScope = $rootScope;
         this.timeout = $timeout;
+        this.q = $q;
 
         this.connection = null;
         this.messages = [];
         this.user = null;
         this.isConnected = false;
-        this.defer = $q.defer();
+        this.defer = null;
+        
+    }
+
+    connect(user) {
+        this.user = user;
+        this.defer = this.q.defer();
+
+        this.connection = new WebSocket(this.connectionUrl);
+        this.connection.onmessage = this.onReceiveMessage.bind(this);
+        this.connection.onopen = this.onOpenConnection.bind(this);
+        this.connection.onclose = this.onCloseConnection.bind(this);
+        this.connection.onerror = this.onConnectionError.bind(this);
+
+        return this.defer.promise;
+    }
+
+    sendMessage(message) {
+        this.connection.send(JSON.stringify({command: 'message', text: message}));
     }
 
     getMessages() {
         return this.messages;
     }
 
-    connect(user) {
-        this.user = user;
-
-        this.connection = new WebSocket(this.connectionUrl);
-        this.connection.onmessage = this.receiveMessage.bind(this);
-        this.connection.onopen = this.openConnection.bind(this);
+    disconnect() {
+        this.defer = this.q.defer();
+        this.connection.close();
         return this.defer.promise;
     }
 
-    receiveMessage(message) {
-        this.messages.push(message.data);
-        this.rootScope.$broadcast('$messageReceived');
-    }
-
-    sendMessage() {
-
-    }
-
-    openConnection(event) {
-
+    onOpenConnection() {
         this.isConnected = true;
         this.connection.send(JSON.stringify({command: 'connect', name: this.user}));
-        this.defer.resolve();
+    }
+
+    onCloseConnection(data) {
+        this.isConnected = false;
+        this.rootScope.$broadcast('$disconnected', data.reason);
+        if (this.defer) {
+            this.defer.reject(data.reason);
+            this.defer = null;
+        }
+    }
+
+    onReceiveMessage(message) {
+        this.messages.push(JSON.parse(message.data));
         
+        if(this.defer) {
+            this.defer.resolve();
+            this.defer = null;
+        }
+        this.timeout(() => {
+            this.rootScope.$broadcast('$messageReceived');
+        }, 50);
+
+    }
+    
+    onConnectionError() {
+        if (this.defer) {
+            this.defer.reject('Server unavailable.');
+            this.defer = null;
+        }
+    }
+
+    cleanup() {
+        this.connection = null;
+        this.messages = [];
+        this.user = null;
     }
 
 }

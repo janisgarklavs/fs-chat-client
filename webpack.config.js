@@ -50,7 +50,7 @@ module.exports = function makeWebpackConfig () {
       exclude: /node_modules/
     }, {
       test: /\.scss$/,
-      loader: isTest ? 'null' : ExtractTextPlugin.extract('style-loader', 'css-loader?sourceMap!sass-loader!postcss-loader')
+      loader: isTest ? 'null' : ExtractTextPlugin.extract('style', 'css!sass!postcss')
     }, {
       test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$/,
       loader: 'file'

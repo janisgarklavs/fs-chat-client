@@ -1,11 +1,19 @@
 <section class="chat">
-    <div class="chatbox">
-        <div class="message" ng-repeat="message in chat.messages track by $index">{{message}}</div>
+    <div class="chatbox" scroll="chat.messages">
+        <div class="message" ng-repeat="msg in chat.messages track by $index">
+            <span class="author">{{msg.userName}}:</span>
+            <span class="body">{{msg.text}}</span>
+        </div>
     </div>
     <div class="controls">
-        <input type="text" class="message">
-        <button>send</button>
-        <button>disconnect</button>
-        <button ng-click="chat.goBack()">Go to back with additional data</button>
+        <input 
+            type="text" 
+            class="message" 
+            autofocus 
+            placeholder="Type your message ..." 
+            ng-model="chat.message"
+            ng-keypress="chat.onKeyPress($event)">
+        <button ng-click="chat.sendMessage()">Send</button>
+        <button ng-click="chat.disconnect()">Disconnect</button>
     </div>
 </section>

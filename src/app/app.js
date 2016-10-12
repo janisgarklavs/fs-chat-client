@@ -10,6 +10,7 @@ import NetworkService from './network/network.service';
 
 import WelcomeDirective from './welcome/welcome.directive';
 import ChatDirective from './chat/chat.directive';
+import ScrollDirective from './chat/scroll.directive';
 
 import '../style/app.scss';
 
@@ -34,7 +35,8 @@ angular
      * Components
      */
     .directive('welcome', () => new WelcomeDirective())
-    .directive('chat', () => new ChatDirective());
+    .directive('chat', () => new ChatDirective())
     
 
+    .directive('scroll', ScrollDirective);
 

@@ -1,5 +1,103 @@
+@import 'variables';
+@import 'reset';
+
+html {
+  height: 100%;
+}
+
 body {
-  margin: 0;
-  padding: 0;  
+  background-color: rgb(255, 255, 255);
+  background-image: linear-gradient(to left, rgb(171, 186, 171), rgb(255, 255, 255));
+  color: $color-text;
+  display: flex;
+  font-family: $font-stack;
+  min-height: 100%;
+  opacity: 1;
+
+}
+
+.container {
+  width: 100%;
+}
+
+.landing, .chat {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  .title {
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    padding: 14px 22px;
+  }
+}
+
+.chatbox {
+  border:2px solid white;
+  border-radius: 4px;
+  height: 100%;
+  margin-bottom: 14px;
+  max-height: 400px;
+  max-width: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 14px;
+  width: 100%;
+
+}
+
+.chat {
+  input {
+    width: 360px;
+  }
+}
+
+.message {
+  margin-bottom: 4px;
+  .author {
+    font-weight: bold;
+    margin-right: 4px;  
+  }
+}
+
+.errors {
+  color: red;
+  margin: 8px 0;
+}
+
+input {
+    background: transparent;
+    border:2px solid white;
+    border-radius: 4px;
+    color: lighten($color-text, 20%);
+    font-size: 18px;
+    padding: 14px 22px;
+    width: 220px;
+    &:focus {
+      box-shadow: 0 0 5px rgba(0, 0, 0, .15);
+    }
+    &::-webkit-input-placeholder {
+      color: lighten($color-text, 55%);
+      font-weight: bold;
+    }
+  }
+
+button {
+  background: transparent;
+  border:2px solid white;
+  border-radius: 4px;
+  color: lighten($color-text, 20%);
+  font-size: 18px;
+  padding: 15.5px 22px;
+  &:hover {
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .15);
+  }
+  &:active {
+    background: white;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, .15);
+  }
 }
 
