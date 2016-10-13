@@ -82,8 +82,6 @@ export default class NetworkService {
         }
     }
 
-    cannot() {}
-
     cleanup() {
         this.connection = null;
         this.messages = [];
