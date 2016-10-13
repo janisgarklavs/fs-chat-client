@@ -18,6 +18,7 @@ export default class NetworkService {
         this.defer = this.q.defer();
 
         this.connection = new WebSocket(this.connectionUrl);
+
         this.connection.onmessage = this.onReceiveMessage.bind(this);
         this.connection.onopen = this.onOpenConnection.bind(this);
         this.connection.onclose = this.onCloseConnection.bind(this);
@@ -43,6 +44,13 @@ export default class NetworkService {
     onOpenConnection() {
         this.isConnected = true;
         this.connection.send(JSON.stringify({command: 'connect', name: this.user}));
+        this.timeout(() => {
+            if (this.defer) {
+                this.connection.close();
+                this.defer.reject('Could not connect for 3 seconds.');
+                this.defer = null;
+            }
+        } , 3000);
     }
 
     onCloseConnection(data) {
@@ -73,6 +81,8 @@ export default class NetworkService {
             this.defer = null;
         }
     }
+
+    cannot() {}
 
     cleanup() {
         this.connection = null;

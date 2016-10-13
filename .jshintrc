@@ -1,7 +1,15 @@
 {
-    "browser": true,
-    "undef": true,
-    "unused": true,
-    "varstmt": true,
-    "esversion": 6
+  "browser": true,
+  "curly":true,
+  "devel":true,
+  "eqeqeq": true,
+  "globals":{
+    "angular": true
+  },
+  "quotmark": "single",
+  "trailing": true,
+  "undef":true,
+  "unused":true,
+  "varstmt": true,
+  "esversion": 6
 }

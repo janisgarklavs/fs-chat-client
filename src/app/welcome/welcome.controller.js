@@ -1,9 +1,9 @@
 export default class WelcomeController {
-    constructor($state, network) {
+    constructor($state, $timeout, network) {
         this.network = network;
         this.state = $state;
         this.isConnecting = false;
-
+        this.timeout = $timeout;
         this.nickname = '';
         this.errors = '';
         if (this.state.params.error) {
@@ -15,15 +15,14 @@ export default class WelcomeController {
         if (!this.nickname) {
             return;
         }
-        if (this.isConnecting) {
-            return;
-        }
         this.isConnecting = true;
         this.network.connect(this.nickname).then(() => {
             this.isConnecting = false;
             this.state.go('chat');
         }, (error) => {
-            this.isConnecting = false;
+            this.timeout(() => {
+                this.isConnecting = false;
+            }, 5000);
             this.nickname = '';
             this.errors = error;
         });
@@ -36,4 +35,4 @@ export default class WelcomeController {
     }
 }
 
-WelcomeController.$inject = ['$state', 'network'];
+WelcomeController.$inject = ['$state', '$timeout', 'network'];
