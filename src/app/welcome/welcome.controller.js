@@ -15,11 +15,15 @@ export default class WelcomeController {
         if (!this.nickname) {
             return;
         }
+        if (this.isConnecting) {
+            return;
+        }
         this.isConnecting = true;
         this.network.connect(this.nickname).then(() => {
             this.isConnecting = false;
             this.state.go('chat');
         }, (error) => {
+            this.isConnecting = false;
             this.nickname = '';
             this.errors = error;
         });

@@ -91,6 +91,17 @@ button {
   color: lighten($color-text, 20%);
   font-size: 18px;
   padding: 15.5px 22px;
+  
+  &:disabled {
+    color: lighten($color-text, 50%);
+    border:2px solid darken(white, 40%);
+    &:hover {
+      background: transparent;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+
   &:hover {
     background: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, .15);
